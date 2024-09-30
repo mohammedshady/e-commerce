@@ -4,24 +4,29 @@ namespace App\Repository;
 
 class AttributesRepository extends Repository
 {
-    public static function getAttributes(string $product_id): array
+    public static function getProductAttributes(string $productId): array
     {
-        // Query to join prices and currencies table to get all required fields
-        $query = 'SELECT p.amount, c.label AS label, c.symbol AS symbol FROM prices p JOIN currency c ON p.currency_id = c.id WHERE p.product_id = :product_id';
-        $params = ['product_id' => $product_id];
+        $query = "SELECT pa.attribute_id, a.name, a.type, i.id as item_id, i.display_value, i.value FROM product_attribute_items pa JOIN attributes a ON pa.attribute_id = a.id JOIN items i ON pa.item_id = i.id WHERE pa.product_id = :productId";
+        $params = ['productId' => $productId];
         $result = (new static)->db->query($query, $params)->get();
 
-        // format result for graphql
-        $formattedResult = array_map(function ($row) {
-            return [
-                'amount' => $row['amount'],
-                'currency' => [
-                    'label' => $row['label'],
-                    'symbol' => $row['symbol'],
-                ],
+        $attributes = [];
+        foreach ($result as $row) {
+            $attributeId = $row['attribute_id'];
+            if (!isset($attributes[$attributeId])) {
+                $attributes[$attributeId] = [
+                    'id' => $attributeId,
+                    'name' => $row['name'],
+                    'type' => $row['type'],
+                    'items' => []
+                ];
+            }
+            $attributes[$attributeId]['items'][] = [
+                'id' => $row['display_value'], // id in database is an incremental value but a string in graphql schema 
+                'displayValue' => $row['display_value'],
+                'value' => $row['value']
             ];
-        }, $result);
-
-        return $formattedResult;
+        }
+        return $attributes;
     }
 }

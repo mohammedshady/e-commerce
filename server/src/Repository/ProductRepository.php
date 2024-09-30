@@ -11,8 +11,6 @@ class ProductRepository extends Repository
         $query = 'SELECT * FROM products';
         $params = [];
         $categoryId = CategoryRepository::getCategory($category);
-
-
         // to be modified
         if ($category && strtolower($category) !== 'all') {
             $query .= ' WHERE category_id = :categoryId';
@@ -21,13 +19,5 @@ class ProductRepository extends Repository
 
         $products = (new static)->db->query($query, $params)->get();
         return $products;
-    }
-    //questionable
-    public static function getProductGallery(string $product_id): array
-    {
-        $query = 'SELECT image_link FROM gallery WHERE product_id=:product_id';
-        $params = ['product_id' => $product_id];
-        $gallery = (new static)->db->query($query, $params)->get();
-        return array_column($gallery, 'image_link');
     }
 }
