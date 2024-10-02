@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Repository\ProductRepository;
 use App\Repository\GalleryRepository;
 use App\Repository\CategoryRepository;
@@ -22,5 +23,17 @@ class ProductService
             $updatedProducts[] = $product;
         }
         return $updatedProducts;
+    }
+    public static function getProduct(string $id): array
+    {
+        $product = ProductRepository::getProduct($id);
+        $updatedProduct = [];
+        $product['gallery'] = GalleryRepository::getProductGallery($product['id']);
+        $product['category'] = CategoryRepository::getCategoryName($product['category_id']);
+        $product['prices'] = PriceRepository::getProductPrices($product['id']);
+        $product['attributes'] = AttributesRepository::getProductAttributes($product['id']);
+        $updatedProduct = $product;
+
+        return $updatedProduct;
     }
 }

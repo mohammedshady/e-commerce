@@ -1,19 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom"; // Use Switch and Route
 import "./App.css";
 import Home from "./Components/Home/Home";
 import Header from "./Components/Header/Header";
+import ProductDetails from "./Components/ProductDetails/ProductDetails";
 
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Header />
+          <div className="main-app-page">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/product/:id" component={ProductDetails} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </div>
+    );
+  }
 }
 
 export default App;

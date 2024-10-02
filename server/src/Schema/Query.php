@@ -12,7 +12,7 @@ class Query
 {
     public static function defineQueries()
     {
-        //$productType = new ProductType();
+        $productType = new ProductType();
 
         return new ObjectType([
             'name' => 'Query',
@@ -25,11 +25,18 @@ class Query
                     'resolve' => static fn($rootValue, array $args): string => $args['message'],
                 ],
                 'products' => [
-                    'type' => Type::listOf(new ProductType()),
+                    'type' => Type::listOf($productType),
                     'args' => [
                         'category' => ['type' => Type::string()],
                     ],
                     'resolve' => static fn($rootValue, array $args): array => ProductsResolver::index($args['category'] ?? null),
+                ],
+                'product' => [
+                    'type' => $productType,
+                    'args' => [
+                        'id' => ['type' => Type::nonNull(Type::string())],
+                    ],
+                    'resolve' => static fn($rootValue, array $args): array => ProductsResolver::get($args['id']),
                 ],
             ],
         ]);

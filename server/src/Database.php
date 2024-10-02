@@ -26,6 +26,10 @@ class Database
     {
         return $this->statement->fetchAll();
     }
+    public function getOne()
+    {
+        return $this->statement->fetch();
+    }
     public function getValue()
     {
         return $this->statement->fetchColumn();

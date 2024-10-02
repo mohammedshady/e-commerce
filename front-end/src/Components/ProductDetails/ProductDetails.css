@@ -1,0 +1,93 @@
+.product-details-container {
+  width: 100%;
+  display: flex;
+}
+.product-details-images {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 150px;
+}
+.product-details-images img {
+  max-width: 130px;
+  object-fit: contain;
+}
+.prodcut-details-image {
+  flex: 4;
+}
+.prodcut-details-image img {
+  max-width: 700px;
+  object-fit: contain;
+}
+.prodcut-details-desc {
+  font-size: 1.3rem;
+  max-width: 350px;
+  text-align: left;
+  flex: 3;
+}
+.product-details-button {
+  font-size: 1.3rem;
+  padding: 20px 40px;
+  outline: none;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  width: 100%;
+}
+.product-details-price-container {
+  font-weight: 700;
+}
+.product-details-price-title {
+  font-size: 1.4rem;
+}
+.product-details-attrib-item {
+}
+.product-details-attrib-Capacity .product-details-attrib-item {
+  transition: 0.2s linear all;
+  border: 1px solid black;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 40px;
+  padding: 5px 20px;
+}
+.product-details-attrib-items {
+  font-size: 1.5rem;
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+}
+.product-details-attrib-items {
+  align-items: center;
+}
+
+.product-details-attrib-Color .product-details-attrib-items {
+  height: 62px;
+}
+.product-details-attrib-Color .product-details-attrib-item {
+  margin: 3px;
+  width: 40px;
+  height: 40px;
+}
+.product-details-attrib-Color .product-details-attrib-item-container:hover {
+  border: 1px solid var(--primary-color);
+}
+.product-details-attrib-Color .product-details-attrib-item-container:active {
+  border: 1px solid var(--primary-color);
+}
+.product-details-attrib-item-container {
+  margin: 0px 3px;
+}
+.product-details-attrib-title {
+  font-weight: 700;
+}
+.product-details-price-contents {
+  font-size: 1.5rem;
+}
+.product-details-attrib-Capacity .product-details-attrib-item:hover {
+  background-color: var(--text-primary) !important;
+  color: var(--bg-primary);
+}

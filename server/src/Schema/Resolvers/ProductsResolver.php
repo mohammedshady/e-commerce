@@ -10,4 +10,8 @@ class ProductsResolver
     {
         return ProductService::getProducts($category);
     }
+    public static function get(string $id): array
+    {
+        return ProductService::getProduct($id);
+    }
 }

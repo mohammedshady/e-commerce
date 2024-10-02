@@ -20,4 +20,11 @@ class ProductRepository extends Repository
         $products = (new static)->db->query($query, $params)->get();
         return $products;
     }
+    public static function getProduct(string $id): array
+    {
+        $query = 'SELECT * FROM products where id = :id';
+        $params = ['id' => $id];
+        $product = (new static)->db->query($query, $params)->getOne();
+        return $product;
+    }
 }
