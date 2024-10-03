@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
 import "./ProductDetails.css";
+import parse from "html-react-parser";
+import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
 
 const GET_PRODUCT = gql`
   query GetItems($id: String!) {
@@ -59,36 +61,12 @@ class ProductDetails extends Component {
               </div>
               <div className="prodcut-details-desc">
                 <h1>{product.name}</h1>
-                {/* <p>{product.description}</p> */}
-                <div className="product-details-attrib-container">
-                  {product.attributes.map((attrib, index) => (
-                    <div className={`product-details-attrib-${attrib.id}`}>
-                      <p className="product-details-attrib-title">
-                        {attrib.id}
-                      </p>
-                      <ul className="product-details-attrib-items">
-                        {attrib.items.map((item, index) => (
-                          <li
-                            key={index}
-                            className="product-details-attrib-item-container"
-                          >
-                            <div
-                              className="product-details-attrib-item"
-                              style={{
-                                backgroundColor:
-                                  attrib.id === "Color"
-                                    ? item.value
-                                    : "transparent",
-                              }}
-                            >
-                              {attrib.id === "Color" ? "" : item.displayValue}
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+
+                {/* Render each attribute using the Attribute class component */}
+                {product.attributes.map((attrib, index) => (
+                  <Attribute key={index} attrib={attrib} />
+                ))}
+
                 <div className="product-details-price-container">
                   <p className="product-details-price-title">PRICE: </p>
                   <p className="product-details-price-contents">
@@ -96,10 +74,10 @@ class ProductDetails extends Component {
                     {product.prices[0].amount}
                   </p>
                 </div>
-                {/* <p>Category: {product.category}</p>
-                <p>In Stock: {product.in_stock ? "Yes" : "No"}</p> */}
                 <button className="product-details-button">ADD TO CART</button>
-                {/* <p>{product.description}</p> */}
+                <p className="product-details-description">
+                  {parse(product.description)}
+                </p>
               </div>
             </div>
           );

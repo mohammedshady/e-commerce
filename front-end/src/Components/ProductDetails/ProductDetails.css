@@ -7,10 +7,13 @@
   flex-direction: column;
   flex: 1;
   max-width: 150px;
+  max-height: 700px;
+  overflow-y: scroll;
 }
 .product-details-images img {
   max-width: 130px;
   object-fit: contain;
+  margin: 10px 0px;
 }
 .prodcut-details-image {
   flex: 4;
@@ -20,6 +23,8 @@
   object-fit: contain;
 }
 .prodcut-details-desc {
+  display: flex;
+  flex-direction: column;
   font-size: 1.3rem;
   max-width: 350px;
   text-align: left;
@@ -40,54 +45,13 @@
 .product-details-price-title {
   font-size: 1.4rem;
 }
-.product-details-attrib-item {
-}
-.product-details-attrib-Capacity .product-details-attrib-item {
-  transition: 0.2s linear all;
-  border: 1px solid black;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 40px;
-  padding: 5px 20px;
-}
-.product-details-attrib-items {
-  font-size: 1.5rem;
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-  display: flex;
-}
-.product-details-attrib-items {
-  align-items: center;
-}
-
-.product-details-attrib-Color .product-details-attrib-items {
-  height: 62px;
-}
-.product-details-attrib-Color .product-details-attrib-item {
-  margin: 3px;
-  width: 40px;
-  height: 40px;
-}
-.product-details-attrib-Color .product-details-attrib-item-container:hover {
-  border: 1px solid var(--primary-color);
-}
-.product-details-attrib-Color .product-details-attrib-item-container:active {
-  border: 1px solid var(--primary-color);
-}
-.product-details-attrib-item-container {
-  margin: 0px 3px;
-}
-.product-details-attrib-title {
-  font-weight: 700;
-}
 .product-details-price-contents {
   font-size: 1.5rem;
 }
-.product-details-attrib-Capacity .product-details-attrib-item:hover {
-  background-color: var(--text-primary) !important;
-  color: var(--bg-primary);
+
+.product-details-description {
+  max-height: 270px;
+  overflow-y: scroll;
+  margin: 40px 0px;
+  font-size: 1.1rem;
 }

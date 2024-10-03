@@ -5,8 +5,8 @@ import gql from "graphql-tag";
 import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const GET_ITEMS = gql`
-  query GetItems {
-    products(category: "all") {
+  query GetItems($category: String!) {
+    products(category: $category) {
       id
       name
       gallery
@@ -17,18 +17,7 @@ const GET_ITEMS = gql`
           symbol
         }
       }
-      attributes {
-        id
-        name
-        type
-        items {
-          id
-          displayValue
-          value
-        }
-      }
       category
-      description
       in_stock
     }
   }
@@ -42,8 +31,11 @@ class Home extends Component {
   render() {
     return (
       <div className="home-container">
-        <h1 className="home-title-h1">Women</h1>
-        <Query query={GET_ITEMS}>
+        <h1 className="home-title-h1">{this.props.currentRoute}</h1>
+        <Query
+          query={GET_ITEMS}
+          variables={{ category: this.props.currentRoute }}
+        >
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;

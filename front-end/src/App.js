@@ -6,14 +6,27 @@ import Header from "./Components/Header/Header";
 import ProductDetails from "./Components/ProductDetails/ProductDetails";
 
 class App extends Component {
+  state = { currentRoute: "all" };
+  handleRouteChange = (route) => {
+    this.setState({ currentRoute: route });
+  };
   render() {
     return (
       <div className="App">
         <BrowserRouter>
-          <Header />
+          <Header
+            onRouteChange={this.handleRouteChange}
+            currentRoute={this.state.currentRoute}
+          />
           <div className="main-app-page">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Home {...props} currentRoute={this.state.currentRoute} />
+                )}
+              />
               <Route path="/product/:id" component={ProductDetails} />
             </Switch>
           </div>

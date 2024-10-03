@@ -4,7 +4,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 0px 40px; */
   width: 100%;
 }
 
@@ -53,4 +52,7 @@
   flex: 1;
   display: flex;
   justify-content: flex-end;
+}
+.active-route {
+  box-shadow: inset 0px -2px 0px var(--primary-color);
 }

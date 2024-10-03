@@ -4,6 +4,13 @@ namespace App\Repository;
 
 class CategoryRepository extends Repository
 {
+    public static function getAllCategories(): array
+    {
+        $query = 'SELECT name from categories';
+        $params = [];
+        $result = (new static)->db->query($query, $params)->get();
+        return array_column($result, 'name');
+    }
     public static function getCategory(string $name): int
     {
         $query = 'SELECT id FROM categories WHERE name = :name';
