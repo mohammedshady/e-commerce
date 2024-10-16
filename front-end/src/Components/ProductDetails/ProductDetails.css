@@ -8,7 +8,7 @@
   flex: 1;
   max-width: 150px;
   max-height: 700px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .product-details-images img {
   max-width: 130px;
@@ -51,7 +51,7 @@
 
 .product-details-description {
   max-height: 270px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 40px 0px;
   font-size: 1.1rem;
 }

@@ -4,6 +4,7 @@ import { Query } from "@apollo/client/react/components";
 import "./Header.css";
 import HeaderLogo from "../../assets/Logo.PNG";
 import CartLogo from "../../assets/Cart.PNG";
+import { withRouter } from "../../WithRouter";
 
 const GET_CATEGORIES = gql`
   query GetCategories {
@@ -13,7 +14,7 @@ const GET_CATEGORIES = gql`
 
 class Header extends Component {
   render() {
-    const { currentRoute } = this.props;
+    const { onRouteChange, currentRoute, onCartClick } = this.props;
     return (
       <div className="header-container">
         <Query query={GET_CATEGORIES}>
@@ -28,7 +29,7 @@ class Header extends Component {
                   <li
                     className={currentRoute === route ? "active-route" : ""}
                     key={route}
-                    onClick={() => this.props.onRouteChange(route)}
+                    onClick={() => onRouteChange(route, this.props)}
                   >
                     {route}
                   </li>
@@ -41,7 +42,7 @@ class Header extends Component {
         <div className="header-item">
           <img src={HeaderLogo} width={30} alt="Header Logo" />
         </div>
-        <div className="header-item">
+        <div className="header-item" onClick={onCartClick}>
           <img src={CartLogo} width={35} alt="Cart Logo" />
         </div>
       </div>
@@ -49,4 +50,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

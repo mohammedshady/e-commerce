@@ -1,0 +1,16 @@
+.cart-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  height: 800px;
+  width: 400px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background-color: white;
+}
+.cart-item-container {
+  display: flex;
+}

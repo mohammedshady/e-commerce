@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
+import { withRouter } from "../../WithRouter";
 import "./ProductDetails.css";
 import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
@@ -37,8 +38,7 @@ const GET_PRODUCT = gql`
 
 class ProductDetails extends Component {
   render() {
-    const { id } = this.props.match.params;
-
+    const { id } = this.props.params;
     return (
       <Query query={GET_PRODUCT} variables={{ id }}>
         {({ loading, error, data }) => {
@@ -75,9 +75,9 @@ class ProductDetails extends Component {
                   </p>
                 </div>
                 <button className="product-details-button">ADD TO CART</button>
-                <p className="product-details-description">
+                <div className="product-details-description">
                   {parse(product.description)}
-                </p>
+                </div>
               </div>
             </div>
           );
@@ -87,4 +87,4 @@ class ProductDetails extends Component {
   }
 }
 
-export default ProductDetails;
+export default withRouter(ProductDetails);

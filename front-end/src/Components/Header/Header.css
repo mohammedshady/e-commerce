@@ -1,4 +1,5 @@
 .header-container {
+  position: relative;
   height: 70px;
   margin: 0 auto;
   display: flex;
@@ -21,8 +22,7 @@
 .header-container ul li {
   cursor: pointer;
   text-transform: uppercase;
-  padding: 15px 10px;
-  margin: 10px 20px;
+  padding: 25px;
   position: relative;
   overflow: hidden;
 }

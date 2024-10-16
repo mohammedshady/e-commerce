@@ -1,4 +1,5 @@
 body {
+  min-height: 100dvh;
   margin: 0;
   font-family: "Raleway", system-ui;
   font-optical-sizing: auto;

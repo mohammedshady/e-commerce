@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Home.css";
 import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { withRouter } from "../../WithRouter";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
@@ -24,9 +24,14 @@ const GET_ITEMS = gql`
 `;
 
 class Home extends Component {
-  handleItemClick = (id) => {
-    this.props.history.push(`/product/${id}`);
-  };
+  constructor() {
+    super();
+    this.handleProductClick = this.handleProductClick.bind(this);
+  }
+
+  handleProductClick(id) {
+    this.props.navigate(`/product/${id}`);
+  }
 
   render() {
     return (
@@ -46,7 +51,7 @@ class Home extends Component {
                   <div
                     className="product-list-item"
                     key={product.id}
-                    onClick={() => this.handleItemClick(product.id)} // Call the click handler
+                    onClick={() => this.handleProductClick(product.id)}
                   >
                     <img src={product.gallery[0]} alt={product.name} />
                     <div className="product-list-item-desc">
