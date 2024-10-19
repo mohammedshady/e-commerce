@@ -3,6 +3,7 @@ import "./Home.css";
 import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
@@ -53,10 +54,27 @@ class Home extends Component {
                     key={product.id}
                     onClick={() => this.handleProductClick(product.id)}
                   >
-                    <img src={product.gallery[0]} alt={product.name} />
+                    <div
+                      className="product-list-item-overlay"
+                      style={!product.in_stock ? { opacity: 0.5 } : null}
+                    >
+                      {!product.in_stock ? (
+                        <p>OUT OF STOCK</p>
+                      ) : (
+                        <div>
+                          <ShoppingCartOutlinedIcon
+                            sx={{ color: "white", fontSize: 28 }}
+                          />
+                        </div>
+                      )}
+                      <img src={product.gallery[0]} alt={product.name} />
+                    </div>
                     <div className="product-list-item-desc">
                       <p className="product-list-item-name">{product.name}</p>
-                      <p className="product-list-item-price">
+                      <p
+                        className="product-list-item-price"
+                        style={!product.in_stock ? { opacity: 0.5 } : null}
+                      >
                         {product.prices[0].currency.symbol}{" "}
                         {product.prices[0].amount}
                       </p>

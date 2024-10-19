@@ -5,6 +5,7 @@ import { withRouter } from "../../WithRouter";
 import "./ProductDetails.css";
 import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
+import pointerImage from "../../assets/left-arrow.png";
 
 const GET_PRODUCT = gql`
   query GetItems($id: String!) {
@@ -37,8 +38,19 @@ const GET_PRODUCT = gql`
 `;
 
 class ProductDetails extends Component {
+  state = { currentImage: 0, productDetails: {} };
   render() {
     const { id } = this.props.params;
+    const imageListClickHandler = (index) => {
+      this.setState({ ...this.state, currentImage: index });
+    };
+    const pointerClickHandler = (sign, total) => {
+      this.setState({
+        ...this.state,
+        currentImage: (this.state.currentImage + (sign + total)) % total,
+      });
+    };
+
     return (
       <Query query={GET_PRODUCT} variables={{ id }}>
         {({ loading, error, data }) => {
@@ -51,13 +63,45 @@ class ProductDetails extends Component {
             <div className="product-details-container">
               <div className="product-details-images">
                 {product.gallery.map((image, index) => (
-                  <img key={index} src={image} alt={product.name} />
+                  <img
+                    key={index}
+                    src={image}
+                    alt={product.name}
+                    onClick={() => imageListClickHandler(index)}
+                    style={
+                      index === this.state.currentImage &&
+                      product.gallery.length > 1
+                        ? { boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px" }
+                        : null
+                    }
+                  />
                 ))}
               </div>
               <div className="prodcut-details-image">
-                <span className="product-details-image-ctrls-right"></span>
-                <img src={product.gallery[0]} alt={product.name} />
-                <span className="product-details-image-ctrls-left"></span>
+                {product.gallery.length > 1 && (
+                  <span
+                    className="product-details-image-ctrls-left"
+                    onClick={() =>
+                      pointerClickHandler(-1, product.gallery.length)
+                    }
+                  >
+                    <img src={pointerImage} alt="leftArrow" />
+                  </span>
+                )}
+                <img
+                  src={product.gallery[this.state.currentImage]}
+                  alt={product.name}
+                />
+                {product.gallery.length > 1 && (
+                  <span
+                    className="product-details-image-ctrls-right"
+                    onClick={() =>
+                      pointerClickHandler(1, product.gallery.length)
+                    }
+                  >
+                    <img src={pointerImage} alt="rightArrow" />
+                  </span>
+                )}
               </div>
               <div className="prodcut-details-desc">
                 <h1>{product.name}</h1>

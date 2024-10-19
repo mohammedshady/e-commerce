@@ -40,3 +40,64 @@
 .product-list-item-price {
   font-weight: 500;
 }
+.product-list-item-overlay {
+  position: relative;
+}
+.product-list-item-overlay p {
+  font-weight: 500;
+  font-size: 1.6rem;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+.product-list-item-overlay div {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+.product-list-item-overlay:hover div {
+  opacity: 1;
+  visibility: visible;
+}
+.prodcut-details-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.product-details-image-ctrls-right,
+.product-details-image-ctrls-left {
+  width: 40px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.product-details-image-ctrls-right img,
+.product-details-image-ctrls-left img {
+  max-width: 100% !important;
+  object-fit: contain;
+}
+.product-details-image-ctrls-right {
+  right: 5%;
+  transform: rotate(180deg);
+}
+.product-details-image-ctrls-left {
+  left: 5%;
+}
