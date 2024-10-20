@@ -4,7 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Attribute from "../Attribute/Attribute";
 
-const items = [
+const items2 = [
   {
     id: "apple-airpods-pro",
     name: "AirPods Pro",
@@ -447,33 +447,47 @@ const items = [
   },
 ];
 class Cart extends Component {
+  state = {
+    items: [],
+  };
+
+  componentDidMount() {
+    const storedItems = localStorage.getItem("cart");
+    if (storedItems) this.setState({ items: JSON.parse(storedItems) });
+  }
   render() {
+    const totalPrice = this.state.items?.reduce((acc, item) => {
+      return acc + parseFloat(item.prices?.[0]?.amount || 0);
+    }, 0);
     return (
       <div className="cart-main-container">
-        <h3 className="cart-main-header">My Bag, 3 items</h3>
-        {items.map((item) => (
-          <div className="cart-item-container">
+        <h3 className="cart-main-header">
+          My Bag, {this.state.items.length} items
+        </h3>
+        {this.state.items?.map((item, index) => (
+          <div className="cart-item-container" key={index}>
             <div className="cart-item-attribures">
               <p className="cart-item-attribures-primary">{item.name}</p>
               <p className="cart-item-attribures-secondary">
-                {item.prices[0].currency.symbol + item.prices[0].amount}
+                {item.prices?.[0]?.currency?.symbol +
+                  item.prices?.[0]?.amount || "N/A"}
               </p>
-              {item.attributes.map((attrib) => (
-                <Attribute attrib={attrib} cart />
+              {item.attributes?.map((attrib, attribIndex) => (
+                <Attribute attrib={attrib} cart key={attribIndex} />
               ))}
             </div>
             <div className="cart-item-controls">
-              <div>
-                <AddIcon />
+              <div onClick={() => this.props.handleAddToCart(item)}>
+                <AddIcon sx={{ fontSize: 20 }} />
               </div>
-              <p>1</p>
-              <div>
-                <RemoveIcon />
+              <p>{item.quantity}</p>
+              <div onClick={() => this.props.handleRemoveFromCart(item)}>
+                <RemoveIcon sx={{ fontSize: 20 }} />
               </div>
             </div>
             <img
               className="cart-item-img"
-              src={item.gallery[0]}
+              src={item.gallery?.[0] || "default-image-url.jpg"}
               alt="cart-item-img"
             />
           </div>
@@ -481,7 +495,7 @@ class Cart extends Component {
 
         <div className="cart-total-container">
           <span>Total</span>
-          <span>$200.00</span>
+          <span>{totalPrice}</span>
         </div>
         <button className="cart-total-button">Place Order</button>
       </div>

@@ -11,6 +11,16 @@ const GET_ITEMS = gql`
       id
       name
       gallery
+      attributes {
+        id
+        name
+        type
+        items {
+          id
+          displayValue
+          value
+        }
+      }
       prices {
         amount
         currency {
@@ -33,6 +43,10 @@ class Home extends Component {
   handleProductClick(id) {
     this.props.navigate(`/product/${id}`);
   }
+  handleAddToCartClick(product, event) {
+    event.stopPropagation();
+    this.props.handleAddToCart(product);
+  }
 
   render() {
     return (
@@ -53,22 +67,24 @@ class Home extends Component {
                     className="product-list-item"
                     key={product.id}
                     onClick={() => this.handleProductClick(product.id)}
+                    style={!product.in_stock ? { opacity: 0.5 } : null}
                   >
-                    <div
-                      className="product-list-item-overlay"
-                      style={!product.in_stock ? { opacity: 0.5 } : null}
-                    >
-                      {!product.in_stock ? (
-                        <p>OUT OF STOCK</p>
-                      ) : (
-                        <div>
-                          <ShoppingCartOutlinedIcon
-                            sx={{ color: "white", fontSize: 28 }}
-                          />
-                        </div>
-                      )}
+                    {!product.in_stock ? (
+                      <p className="product-item-props">OUT OF STOCK</p>
+                    ) : (
+                      <div className="quick-cart-container">
+                        <ShoppingCartOutlinedIcon
+                          sx={{ color: "white", fontSize: 28 }}
+                          onClick={(event) =>
+                            this.handleAddToCartClick(product, event)
+                          }
+                        />
+                      </div>
+                    )}
+                    <div>
                       <img src={product.gallery[0]} alt={product.name} />
                     </div>
+
                     <div className="product-list-item-desc">
                       <p className="product-list-item-name">{product.name}</p>
                       <p

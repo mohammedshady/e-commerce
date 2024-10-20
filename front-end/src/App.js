@@ -22,7 +22,15 @@ class App extends Component {
       this.toggleCart();
     }
   };
+  handleAddToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productInCart = cart.find((item) => item.id === product.id);
 
+    if (productInCart) productInCart.quantity += 1;
+    else cart.push({ ...product, quantity: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log(`${product.name} added to cart`);
+  }
   render() {
     console.log(this.state.showCart);
     return (
@@ -40,13 +48,25 @@ class App extends Component {
               style={{ marginTop: 100 }}
             >
               <div className="main-app-page">
-                {this.state.showCart ? <Cart /> : null}
+                {this.state.showCart ? (
+                  <Cart handleAddToCart={this.handleAddToCart} />
+                ) : null}
                 <Routes>
                   <Route
                     path="/"
-                    element={<Home currentRoute={this.state.currentRoute} />}
+                    element={
+                      <Home
+                        currentRoute={this.state.currentRoute}
+                        handleAddToCart={this.handleAddToCart}
+                      />
+                    }
                   />
-                  <Route path="/product/:id" element={<ProductDetails />} />
+                  <Route
+                    path="/product/:id"
+                    element={
+                      <ProductDetails handleAddToCart={this.handleAddToCart} />
+                    }
+                  />
                 </Routes>
               </div>
             </div>
