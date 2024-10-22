@@ -20,7 +20,9 @@
 }
 .prodcut-details-image img {
   max-width: 700px;
+  max-height: 750px;
   object-fit: contain;
+  height: 100%;
 }
 .prodcut-details-desc {
   display: flex;
@@ -38,6 +40,7 @@
   background-color: var(--primary-color);
   color: white;
   width: 100%;
+  cursor: pointer;
 }
 .product-details-price-container {
   font-weight: 700;
@@ -54,4 +57,8 @@
   overflow-y: auto;
   margin: 40px 0px;
   font-size: 1.1rem;
+}
+.disabled-button {
+  background-color: var(--text-secondary);
+  cursor: default;
 }

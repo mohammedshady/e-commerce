@@ -4,7 +4,6 @@ import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ProductDetails from "../ProductDetails/ProductDetails";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {

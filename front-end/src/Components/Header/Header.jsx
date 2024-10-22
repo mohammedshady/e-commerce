@@ -19,8 +19,9 @@ class Header extends Component {
       <div className="header-container">
         <Query query={GET_CATEGORIES}>
           {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error: {error.message}</p>;
+            if (loading) return <p className="header-item">Loading...</p>;
+            if (error)
+              return <p className="header-item">Error: {error.message}</p>;
             const routes = data.categories;
 
             return (

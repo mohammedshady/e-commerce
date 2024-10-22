@@ -38,31 +38,101 @@ const GET_PRODUCT = gql`
 `;
 
 class ProductDetails extends Component {
-  state = { currentImage: 0, productDetails: {} };
+  state = { currentImage: 0, productDetails: null };
+
+  // Initialize selected var as false for all items
+  addSelectedToAttributes = (product) => {
+    return {
+      ...product,
+      attributes: product.attributes.map((attribute) => ({
+        ...attribute,
+        items: attribute.items.map((item) => ({
+          ...item,
+          selected: false,
+        })),
+      })),
+    };
+  };
+
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.params;
+    if (prevProps.params.id !== id && this.state.productDetails !== null) {
+      this.setState({ productDetails: null });
+    }
+  }
+
+  hasUnselectedAttributes = () => {
+    const { productDetails } = this.state;
+    if (!productDetails.attributes || productDetails.attributes.length === 0) {
+      return false;
+    }
+    return productDetails.attributes.some((attribute) =>
+      attribute.items.every((item) => !item.selected)
+    );
+  };
+
   render() {
     const { id } = this.props.params;
+
     const imageListClickHandler = (index) => {
-      this.setState({ ...this.state, currentImage: index });
+      this.setState({ currentImage: index });
     };
+
     const pointerClickHandler = (sign, total) => {
       this.setState({
-        ...this.state,
         currentImage: (this.state.currentImage + (sign + total)) % total,
       });
     };
 
+    const setAttributeSelected = (attributeId, selectedValue, id) => {
+      const updatedAttributes = this.state.productDetails.attributes.map(
+        (attribute) => {
+          if (attribute.id === attributeId) {
+            return {
+              ...attribute,
+              items: attribute.items.map((item) => ({
+                ...item,
+                selected: item.value === selectedValue,
+              })),
+            };
+          }
+          return attribute;
+        }
+      );
+
+      this.setState({
+        productDetails: {
+          ...this.state.productDetails,
+          attributes: updatedAttributes,
+        },
+      });
+    };
+
     return (
-      <Query query={GET_PRODUCT} variables={{ id }}>
+      <Query
+        query={GET_PRODUCT}
+        variables={{ id }}
+        onCompleted={(data) => {
+          if (!this.state.productDetails) {
+            this.setState({
+              productDetails: this.addSelectedToAttributes(data.product),
+            });
+          }
+        }}
+      >
         {({ loading, error, data }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Error: {error.message}</p>;
 
-          const product = data.product;
+          const product = this.state.productDetails;
+          if (!product) return null;
+
+          const hasUnselectedAttributes = this.hasUnselectedAttributes();
 
           return (
             <div className="product-details-container">
               <div className="product-details-images">
-                {product.gallery.map((image, index) => (
+                {product?.gallery.map((image, index) => (
                   <img
                     key={index}
                     src={image}
@@ -105,10 +175,12 @@ class ProductDetails extends Component {
               </div>
               <div className="prodcut-details-desc">
                 <h1>{product.name}</h1>
-
-                {/* Render each attribute using the Attribute class component */}
                 {product.attributes.map((attrib, index) => (
-                  <Attribute key={index} attrib={attrib} />
+                  <Attribute
+                    key={index}
+                    attrib={attrib}
+                    onItemSelect={setAttributeSelected}
+                  />
                 ))}
 
                 <div className="product-details-price-container">
@@ -118,7 +190,17 @@ class ProductDetails extends Component {
                     {product.prices[0].amount}
                   </p>
                 </div>
-                <button className="product-details-button">ADD TO CART</button>
+
+                <button
+                  className={`product-details-button${
+                    hasUnselectedAttributes ? " disabled-button" : ""
+                  }`}
+                  disabled={hasUnselectedAttributes}
+                  onClick={() => this.props.handleAddToCart(product)}
+                >
+                  ADD TO CART
+                </button>
+
                 <div className="product-details-description">
                   {parse(product.description)}
                 </div>

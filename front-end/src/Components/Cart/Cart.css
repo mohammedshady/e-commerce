@@ -56,6 +56,10 @@
   align-items: center;
   padding: 3px;
   border: 1px solid var(--text-primary);
+  cursor: pointer;
+}
+.cart-item-controls div:hover {
+  background-color: var(--text-secondary);
 }
 .cart-total-container {
   margin: 20px 0px;
