@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
 import "./Header.css";
-import HeaderLogo from "../../assets/Logo.PNG";
-import CartLogo from "../../assets/Cart.PNG";
+import HeaderLogo from "../../assets/Logo.svg";
+import CartLogo from "../../assets/Cart.svg";
 import { withRouter } from "../../WithRouter";
 
 const GET_CATEGORIES = gql`
@@ -14,7 +14,7 @@ const GET_CATEGORIES = gql`
 
 class Header extends Component {
   render() {
-    const { onRouteChange, currentRoute, onCartClick } = this.props;
+    const { onRouteChange, currentRoute, onCartClick, cartSize } = this.props;
     return (
       <div className="header-container">
         <Query query={GET_CATEGORIES}>
@@ -41,10 +41,15 @@ class Header extends Component {
         </Query>
 
         <div className="header-item">
-          <img src={HeaderLogo} width={30} alt="Header Logo" />
+          <img src={HeaderLogo} width={40} alt="Header Logo" />
         </div>
-        <div className="header-item" onClick={onCartClick}>
-          <img src={CartLogo} width={35} alt="Cart Logo" />
+        <div className="header-item">
+          <div className="cart-logo-container" onClick={onCartClick}>
+            <img src={CartLogo} width={25} alt="Cart Logo" />
+            {cartSize > 0 ? (
+              <div className="cart-item-counter">{cartSize}</div>
+            ) : null}
+          </div>
         </div>
       </div>
     );

@@ -76,12 +76,12 @@ class App extends Component {
             onRouteChange={this.handleRouteChange}
             currentRoute={this.state.currentRoute}
             onCartClick={this.toggleCart}
+            cartSize={this.state.cartItems.length}
           />
           <div className="main-app-page-container">
             <div
               className={`${this.state.showCart ? "cart-overlay" : ""}`}
               onClick={this.handleClickAway}
-              style={{ marginTop: 100 }}
             >
               <div className="main-app-page">
                 {this.state.showCart && (

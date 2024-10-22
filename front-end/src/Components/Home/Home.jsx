@@ -3,7 +3,7 @@ import "./Home.css";
 import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import cartIcon from "../../assets/CartW.svg";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
@@ -80,13 +80,13 @@ class Home extends Component {
                     {!product.in_stock ? (
                       <p className="product-item-props">OUT OF STOCK</p>
                     ) : (
-                      <div className="quick-cart-container">
-                        <ShoppingCartOutlinedIcon
-                          sx={{ color: "white", fontSize: 28 }}
-                          onClick={(event) =>
-                            this.handleAddToCartClick(product, event)
-                          }
-                        />
+                      <div
+                        className="quick-cart-container"
+                        onClick={(event) =>
+                          this.handleAddToCartClick(product, event)
+                        }
+                      >
+                        <img style={{ width: 35 }} src={cartIcon} />
                       </div>
                     )}
                     <div>

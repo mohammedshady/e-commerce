@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Cart.css";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "../../assets/plus.png";
+import RemoveIcon from "../../assets/minus.png";
 import Attribute from "../Attribute/Attribute";
 
 class Cart extends Component {
@@ -41,7 +41,10 @@ class Cart extends Component {
 
     return (
       <div className="cart-main-container">
-        <h3 className="cart-main-header">My Bag, {items.length} items</h3>
+        <h3 className="cart-main-header">
+          My Bag,
+          {items.length > 1 ? `${items.length} Items` : `${items.length} Item`}
+        </h3>
         {items.map((item, index) => (
           <div className="cart-item-container" key={index}>
             <div className="cart-item-attribures">
@@ -62,11 +65,11 @@ class Cart extends Component {
             </div>
             <div className="cart-item-controls">
               <div onClick={() => this.props.handleAddToCart(item)}>
-                <AddIcon sx={{ fontSize: 20 }} />
+                <img src={AddIcon} alt="addIcon" width={20} />
               </div>
               <p>{item.quantity}</p>
               <div onClick={() => this.props.handleRemoveFromCart(item.uid)}>
-                <RemoveIcon sx={{ fontSize: 20 }} />
+                <img src={RemoveIcon} alt="RemoveIcon" width={20} />
               </div>
             </div>
             <img

@@ -58,3 +58,20 @@
 .active-route {
   box-shadow: inset 0px -2px 0px var(--primary-color);
 }
+.cart-logo-container {
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+}
+.cart-item-counter {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: var(--text-primary);
+  color: white;
+  position: absolute;
+  top: -20%;
+  right: -20%;
+}
