@@ -4,6 +4,7 @@ import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import ProductDetails from "../ProductDetails/ProductDetails";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
@@ -39,13 +40,21 @@ class Home extends Component {
     super();
     this.handleProductClick = this.handleProductClick.bind(this);
   }
-
+  selectProductAttributes(product) {
+    product = JSON.parse(JSON.stringify(product));
+    product.attributes.forEach((attribute) => {
+      attribute.items.forEach((item, index) => {
+        item.selected = index === 0;
+      });
+    });
+    return product;
+  }
   handleProductClick(id) {
     this.props.navigate(`/product/${id}`);
   }
   handleAddToCartClick(product, event) {
     event.stopPropagation();
-    this.props.handleAddToCart(product);
+    this.props.handleAddToCart(this.selectProductAttributes(product));
   }
 
   render() {

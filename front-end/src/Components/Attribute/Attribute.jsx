@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Attribute.css";
 
 class Attribute extends Component {
+  // update item in local storage
   render() {
     const { attrib, cart } = this.props;
 
@@ -24,7 +25,9 @@ class Attribute extends Component {
               key={index}
               className={`${
                 cart ? "minimized-" : ""
-              }product-details-attrib-item-container`}
+              }product-details-attrib-item-container ${
+                item.selected && cart ? "selected-attribute-item" : ""
+              }`}
             >
               <div
                 className="product-details-attrib-item"

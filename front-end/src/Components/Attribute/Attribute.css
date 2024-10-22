@@ -43,6 +43,15 @@
   font-size: 1rem;
   margin: 10px 0px;
 }
+.minimized-product-details-attrib-text
+  .selected-attribute-item
+  .product-details-attrib-item {
+  background-color: var(--text-primary) !important;
+  color: var(--bg-primary);
+}
+.minimized-product-details-attrib-swatch .selected-attribute-item {
+  border: 1px solid var(--primary-color);
+}
 /* fornow */
 .minimized-product-details-attrib-swatch
   .minimized-product-details-attrib-item-container:hover {
