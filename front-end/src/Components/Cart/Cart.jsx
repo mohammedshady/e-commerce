@@ -39,6 +39,29 @@ class Cart extends Component {
       this.props.handleStateChange(items);
     };
 
+    const handlePlaceOrder = () => {
+      const placedOrders = items.map((item, index) => {
+        const productAttributes = item.attributes.map((attribute) => {
+          const selectedItem = attribute.items.find(
+            (attrItem) => attrItem.selected
+          );
+          return {
+            name: attribute.name,
+            value: selectedItem.value,
+          };
+        });
+
+        return {
+          index: index,
+          name: item.id,
+          quantity: item.quantity,
+          attributes: productAttributes,
+        };
+      });
+
+      console.log(placedOrders);
+    };
+
     return (
       <div className="cart-main-container">
         <h3 className="cart-main-header">
@@ -84,7 +107,15 @@ class Cart extends Component {
           <span>Total</span>
           <span>{parseFloat(totalPrice.toFixed(2))}</span>
         </div>
-        <button className="cart-total-button">Place Order</button>
+
+        <button
+          onClick={handlePlaceOrder}
+          className={`cart-total-button ${
+            items.length == 0 ? "disabled-button" : ""
+          }`}
+        >
+          Place Order
+        </button>
       </div>
     );
   }

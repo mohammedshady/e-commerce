@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Schema\Mutation;
 use GraphQL\GraphQL as GraphQLBase;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -18,10 +19,13 @@ class GraphQL
         try {
 
             $queryType = Query::defineQueries();
+            $mutationType = Mutation::defineMutations();
 
             $schema = new Schema(
                 (new SchemaConfig())
                     ->setQuery($queryType)
+                    ->setMutation($mutationType)
+
             );
 
             $rawInput = file_get_contents('php://input');

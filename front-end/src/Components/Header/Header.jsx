@@ -11,6 +11,35 @@ const GET_CATEGORIES = gql`
     categories
   }
 `;
+const x = {
+  query: "mutation AddOrder($items: [ItemInput!]!) { addOrder(items: $items) }",
+  variables: {
+    order: {
+      items: [
+        {
+          product: "apple-imac-2021",
+          quantity: 1,
+          attributes: [
+            {
+              name: "Capacity",
+              value: "256GB",
+            },
+            {
+              name: "Touch ID in keyboard",
+              value: "Yes",
+            },
+            {
+              name: "With USB 3 ports",
+              value: "No",
+            },
+          ],
+        },
+      ],
+      price: 1243.21,
+    },
+  },
+  operationName: "AddOrder",
+};
 
 class Header extends Component {
   render() {

@@ -54,3 +54,7 @@
 ::-webkit-scrollbar-thumb {
   background-color: rgba(68, 68, 68, 0.3);
 }
+.disabled-button {
+  background-color: var(--text-secondary) !important;
+  cursor: default !important;
+}
