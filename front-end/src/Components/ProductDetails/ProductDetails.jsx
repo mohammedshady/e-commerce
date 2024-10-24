@@ -7,6 +7,16 @@ import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
 import pointerImage from "../../assets/left-arrow.png";
 
+function toKebabCase(str) {
+  return str
+    .trim() // Remove leading and trailing whitespace
+    .toLowerCase() // Convert to lowercase
+    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
+    .replace(/[^\w-]+/g, "") // Remove any non-word characters except hyphens
+    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
+    .replace(/^-+|-+$/g, ""); // Remove hyphens from the start and end
+}
+
 const GET_PRODUCT = gql`
   query GetItems($id: String!) {
     product(id: $id) {
@@ -128,10 +138,14 @@ class ProductDetails extends Component {
           if (!product) return null;
 
           const hasUnselectedAttributes = this.hasUnselectedAttributes();
+          console.log(product);
 
           return (
             <div className="product-details-container">
-              <div className="product-details-images">
+              <div
+                className="product-details-images"
+                data-testid="product-gallery"
+              >
                 {product?.gallery.map((image, index) => (
                   <img
                     key={index}
@@ -141,7 +155,7 @@ class ProductDetails extends Component {
                     style={
                       index === this.state.currentImage &&
                       product.gallery.length > 1
-                        ? { boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px" }
+                        ? { boxShadow: "rgba(0, 0, 0, 0.15) 0px 5px 15px 0px" }
                         : null
                     }
                   />
@@ -193,15 +207,24 @@ class ProductDetails extends Component {
 
                 <button
                   className={`product-details-button${
-                    hasUnselectedAttributes ? " disabled-button" : ""
+                    !product.in_stock || hasUnselectedAttributes
+                      ? " disabled-button"
+                      : ""
                   }`}
-                  disabled={hasUnselectedAttributes}
-                  onClick={() => this.props.handleAddToCart(product)}
+                  disabled={!product.in_stock || hasUnselectedAttributes}
+                  data-testid="add-to-cart"
+                  onClick={() => {
+                    this.props.handleAddToCart(product);
+                    this.props.toggleCart();
+                  }}
                 >
-                  ADD TO CART
+                  {product.in_stock ? "ADD TO CART" : "OUT OF STOCK"}
                 </button>
 
-                <div className="product-details-description">
+                <div
+                  className="product-details-description"
+                  data-testid="product-description"
+                >
                   {parse(product.description)}
                 </div>
               </div>

@@ -64,10 +64,11 @@ class App extends Component {
     }
   };
 
-  updateStateList = (list) => {
-    this.setState({ ...this.state, cartItems: list });
+  handleClearCart = () => {
+    this.setState({ ...this.state, cartItems: [] });
+    localStorage.setItem("cart", JSON.stringify([]));
+    console.log("All items removed from cart");
   };
-
   render() {
     return (
       <div className="App">
@@ -76,6 +77,7 @@ class App extends Component {
             onRouteChange={this.handleRouteChange}
             currentRoute={this.state.currentRoute}
             onCartClick={this.toggleCart}
+            cartVisible={this.state.showCart}
             cartSize={this.state.cartItems.length}
           />
           <div className="main-app-page-container">
@@ -89,7 +91,7 @@ class App extends Component {
                     state={this.state}
                     handleAddToCart={this.handleAddToCart}
                     handleRemoveFromCart={this.handleRemoveFromCart}
-                    handleStateChange={this.updateStateList}
+                    handleClearCart={this.handleClearCart}
                   />
                 )}
                 <Routes>
@@ -105,7 +107,10 @@ class App extends Component {
                   <Route
                     path="/product/:id"
                     element={
-                      <ProductDetails handleAddToCart={this.handleAddToCart} />
+                      <ProductDetails
+                        handleAddToCart={this.handleAddToCart}
+                        toggleCart={this.toggleCart}
+                      />
                     }
                   />
                 </Routes>

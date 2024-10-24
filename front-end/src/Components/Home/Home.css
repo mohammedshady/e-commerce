@@ -16,7 +16,7 @@
 }
 .product-list-item:hover {
   cursor: pointer;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 }
 .product-list-item img {
   width: 100%;
@@ -26,9 +26,11 @@
 }
 .home-title-h1 {
   align-self: flex-start;
-  margin: 20px 40px;
+  margin: 25px 40px;
   text-align: left;
   font-weight: 300;
+  font-size: 3rem;
+  text-transform: capitalize;
 }
 .product-list-item {
   display: flex;

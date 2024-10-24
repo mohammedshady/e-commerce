@@ -1,66 +1,51 @@
 import React, { Component } from "react";
 import "./Cart.css";
+import gql from "graphql-tag";
+import { Mutation } from "@apollo/client/react/components";
 import AddIcon from "../../assets/plus.png";
 import RemoveIcon from "../../assets/minus.png";
 import Attribute from "../Attribute/Attribute";
 
+const ADD_ORDER = gql`
+  mutation AddOrder($items: [ItemInput!]!, $price: Float!) {
+    addOrder(items: $items, price: $price)
+  }
+`;
+
 class Cart extends Component {
-  render() {
+  handlePrepareOrder = () => {
     const items = this.props.state?.cartItems;
     const totalPrice = items.reduce((acc, item) => {
       return acc + parseFloat(item.prices?.[0]?.amount * item.quantity || 0);
     }, 0);
 
-    // to be moved
-    const setAttributeSelected = (item, attributeId, selectedValue) => {
-      const updatedAttributes = item.attributes.map((attribute) => {
-        if (attribute.id === attributeId) {
-          return {
-            ...attribute,
-            items: attribute.items.map((item) => ({
-              ...item,
-              selected: item.value === selectedValue,
-            })),
-          };
-        }
-        return attribute;
-      });
-      return updatedAttributes;
-    };
-    const onItemSelect = (attribute, selectedValue, uid) => {
-      const product = items.find((item) => item.uid === uid);
-      const updatedAttributes = setAttributeSelected(
-        product,
-        attribute,
-        selectedValue
-      );
-      product.attributes = updatedAttributes;
-
-      this.props.handleStateChange(items);
-    };
-
-    const handlePlaceOrder = () => {
-      const placedOrders = items.map((item, index) => {
-        const productAttributes = item.attributes.map((attribute) => {
-          const selectedItem = attribute.items.find(
-            (attrItem) => attrItem.selected
-          );
-          return {
-            name: attribute.name,
-            value: selectedItem.value,
-          };
-        });
-
+    const placedOrders = items.map((item, index) => {
+      const productAttributes = item.attributes.map((attribute) => {
+        const selectedItem = attribute.items.find(
+          (attrItem) => attrItem.selected
+        );
         return {
-          index: index,
-          name: item.id,
-          quantity: item.quantity,
-          attributes: productAttributes,
+          name: attribute.name,
+          value: selectedItem.value,
         };
       });
 
-      console.log(placedOrders);
-    };
+      return {
+        product: item.id,
+        quantity: item.quantity,
+        attributes: productAttributes,
+        price: parseFloat(item.prices[0].amount),
+      };
+    });
+
+    return { items: placedOrders, price: totalPrice };
+  };
+
+  render() {
+    const items = this.props.state?.cartItems;
+    const totalPrice = items.reduce((acc, item) => {
+      return acc + parseFloat(item.prices?.[0]?.amount * item.quantity || 0);
+    }, 0);
 
     return (
       <div className="cart-main-container">
@@ -82,18 +67,23 @@ class Cart extends Component {
                   cart
                   key={attribIndex}
                   uid={item.uid}
-                  onItemSelect={onItemSelect}
                 />
               ))}
             </div>
             <div className="cart-item-controls">
-              <div onClick={() => this.props.handleAddToCart(item)}>
+              <button
+                onClick={() => this.props.handleAddToCart(item)}
+                data-testid="cart-item-amount-increase"
+              >
                 <img src={AddIcon} alt="addIcon" width={20} />
-              </div>
-              <p>{item.quantity}</p>
-              <div onClick={() => this.props.handleRemoveFromCart(item.uid)}>
+              </button>
+              <p data-testid="cart-item-amount">{item.quantity}</p>
+              <button
+                onClick={() => this.props.handleRemoveFromCart(item.uid)}
+                data-testid="cart-item-amount-decrease"
+              >
                 <img src={RemoveIcon} alt="RemoveIcon" width={20} />
-              </div>
+              </button>
             </div>
             <img
               className="cart-item-img"
@@ -105,17 +95,47 @@ class Cart extends Component {
 
         <div className="cart-total-container">
           <span>Total</span>
-          <span>{parseFloat(totalPrice.toFixed(2))}</span>
+          <span data-testid="cart-total">
+            {parseFloat(totalPrice.toFixed(2))}
+          </span>
         </div>
 
-        <button
-          onClick={handlePlaceOrder}
-          className={`cart-total-button ${
-            items.length == 0 ? "disabled-button" : ""
-          }`}
-        >
-          Place Order
-        </button>
+        <Mutation mutation={ADD_ORDER}>
+          {(addOrder, { data, loading, error }) => (
+            <div>
+              <button
+                onClick={() => {
+                  const order = this.handlePrepareOrder();
+                  addOrder({
+                    variables: {
+                      items: order.items,
+                      price: order.price,
+                    },
+                  })
+                    .then(() => {
+                      this.props.handleClearCart();
+                    })
+                    .catch((err) => {
+                      console.error("Error placing order:", err);
+                    });
+                }}
+                className={`cart-total-button ${
+                  items.length === 0 ? "disabled-button" : ""
+                }`}
+                disabled={items.length === 0}
+              >
+                {loading ? "Placing Order..." : "Place Order"}
+              </button>
+
+              {error && <p>Error: {error.message}</p>}
+              {data && (
+                <p>
+                  Order placed successfully! Your Order ID Is {data.addOrder}
+                </p>
+              )}
+            </div>
+          )}
+        </Mutation>
       </div>
     );
   }

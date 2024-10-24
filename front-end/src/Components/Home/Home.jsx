@@ -5,6 +5,16 @@ import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
 import cartIcon from "../../assets/CartW.svg";
 
+function toKebabCase(str) {
+  return str
+    .trim() // Remove leading and trailing whitespace
+    .toLowerCase() // Convert to lowercase
+    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
+    .replace(/[^\w-]+/g, "") // Remove any non-word characters except hyphens
+    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
+    .replace(/^-+|-+$/g, ""); // Remove hyphens from the start and end
+}
+
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
     products(category: $category) {
@@ -76,6 +86,7 @@ class Home extends Component {
                     key={product.id}
                     onClick={() => this.handleProductClick(product.id)}
                     style={!product.in_stock ? { opacity: 0.5 } : null}
+                    data-testid={`product-${toKebabCase(product.name)}`}
                   >
                     {!product.in_stock ? (
                       <p className="product-item-props">OUT OF STOCK</p>
@@ -86,7 +97,11 @@ class Home extends Component {
                           this.handleAddToCartClick(product, event)
                         }
                       >
-                        <img style={{ width: 35 }} src={cartIcon} />
+                        <img
+                          style={{ width: 35 }}
+                          src={cartIcon}
+                          alt="cartIcon"
+                        />
                       </div>
                     )}
                     <div>

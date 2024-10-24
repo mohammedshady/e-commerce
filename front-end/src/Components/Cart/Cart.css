@@ -50,7 +50,10 @@
 .cart-item-controls p {
   font-size: 1.5rem;
 }
-.cart-item-controls div {
+.cart-item-controls button {
+  outline: none;
+  border: none;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +61,7 @@
   border: 1px solid var(--text-primary);
   cursor: pointer;
 }
-.cart-item-controls div:hover {
+.cart-item-controls button:hover {
   background-color: var(--text-secondary);
 }
 .cart-total-container {
@@ -69,6 +72,7 @@
   justify-content: space-between;
 }
 .cart-total-button {
+  transition: 0.2s all linear;
   font-size: 1.3rem;
   padding: 15px 30px;
   outline: none;
@@ -77,4 +81,7 @@
   color: white;
   width: 100%;
   cursor: pointer;
+}
+.cart-total-button:hover {
+  background-color: var(--secondary-color);
 }

@@ -5,45 +5,18 @@ import "./Header.css";
 import HeaderLogo from "../../assets/Logo.svg";
 import CartLogo from "../../assets/Cart.svg";
 import { withRouter } from "../../WithRouter";
+import { Link } from "react-router-dom";
 
 const GET_CATEGORIES = gql`
   query GetCategories {
     categories
   }
 `;
-const x = {
-  query: "mutation AddOrder($items: [ItemInput!]!) { addOrder(items: $items) }",
-  variables: {
-    order: {
-      items: [
-        {
-          product: "apple-imac-2021",
-          quantity: 1,
-          attributes: [
-            {
-              name: "Capacity",
-              value: "256GB",
-            },
-            {
-              name: "Touch ID in keyboard",
-              value: "Yes",
-            },
-            {
-              name: "With USB 3 ports",
-              value: "No",
-            },
-          ],
-        },
-      ],
-      price: 1243.21,
-    },
-  },
-  operationName: "AddOrder",
-};
 
 class Header extends Component {
   render() {
-    const { onRouteChange, currentRoute, onCartClick, cartSize } = this.props;
+    const { onRouteChange, currentRoute, onCartClick, cartSize, cartVisible } =
+      this.props;
     return (
       <div className="header-container">
         <Query query={GET_CATEGORIES}>
@@ -59,9 +32,24 @@ class Header extends Component {
                   <li
                     className={currentRoute === route ? "active-route" : ""}
                     key={route}
-                    onClick={() => onRouteChange(route, this.props)}
+                    onClick={() => {
+                      onRouteChange(route, this.props);
+                      if (cartVisible) onCartClick();
+                    }}
                   >
-                    {route}
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--text-primary)",
+                      }}
+                      data-testid={`${
+                        currentRoute === route
+                          ? "active-category-link"
+                          : "category-link"
+                      }`}
+                    >
+                      {route}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -73,12 +61,16 @@ class Header extends Component {
           <img src={HeaderLogo} width={40} alt="Header Logo" />
         </div>
         <div className="header-item">
-          <div className="cart-logo-container" onClick={onCartClick}>
-            <img src={CartLogo} width={25} alt="Cart Logo" />
+          <button
+            data-testid="cart-btn"
+            className="cart-logo-container"
+            onClick={onCartClick}
+          >
+            <img src={CartLogo} width={28} alt="Cart Logo" />
             {cartSize > 0 ? (
               <div className="cart-item-counter">{cartSize}</div>
             ) : null}
-          </div>
+          </button>
         </div>
       </div>
     );
