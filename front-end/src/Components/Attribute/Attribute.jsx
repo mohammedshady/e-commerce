@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import "./Attribute.css";
-
-function toKebabCase(str) {
-  return str
-    .trim() // Remove leading and trailing whitespace
-    .toLowerCase() // Convert to lowercase
-    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
-    .replace(/[^\w-]+/g, "") // Remove any non-word characters except hyphens
-    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove hyphens from the start and end
-}
+import { toKebabCase } from "../../helpers/toKebabCase";
 class Attribute extends Component {
   getItemStyle = (attrib, item) => {
     return {
@@ -49,11 +40,13 @@ class Attribute extends Component {
                     ? item.selected
                       ? `cart-item-attribute-${toKebabCase(
                           attrib.name
-                        )}-${toKebabCase(attrib.name)}-selected`
+                        )}-${toKebabCase(item.value)}-selected`
                       : `cart-item-attribute-${toKebabCase(
                           attrib.name
-                        )}-${toKebabCase(attrib.name)}`
-                    : ""
+                        )}-${toKebabCase(item.value)}`
+                    : `product-attribute-${toKebabCase(
+                        attrib.name
+                      )}-${toKebabCase(item.value, false)}`
                 }
                 style={this.getItemStyle(attrib, item)}
                 onClick={() =>

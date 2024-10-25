@@ -4,16 +4,8 @@ import { Query } from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import { withRouter } from "../../WithRouter";
 import cartIcon from "../../assets/CartW.svg";
-
-function toKebabCase(str) {
-  return str
-    .trim() // Remove leading and trailing whitespace
-    .toLowerCase() // Convert to lowercase
-    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
-    .replace(/[^\w-]+/g, "") // Remove any non-word characters except hyphens
-    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove hyphens from the start and end
-}
+import { useParams } from "react-router-dom";
+import { toKebabCase } from "../../helpers/toKebabCase";
 
 const GET_ITEMS = gql`
   query GetItems($category: String!) {
@@ -67,13 +59,11 @@ class Home extends Component {
   }
 
   render() {
+    const { category } = this.props;
     return (
       <div className="home-container">
-        <h1 className="home-title-h1">{this.props.currentRoute}</h1>
-        <Query
-          query={GET_ITEMS}
-          variables={{ category: this.props.currentRoute }}
-        >
+        <h1 className="home-title-h1">{category}</h1>
+        <Query query={GET_ITEMS} variables={{ category }}>
           {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
@@ -129,4 +119,8 @@ class Home extends Component {
   }
 }
 
-export default withRouter(Home);
+function HomeWithParams(props) {
+  const { category } = useParams();
+  return <Home {...props} category={category || "all"} />;
+}
+export default withRouter(HomeWithParams);

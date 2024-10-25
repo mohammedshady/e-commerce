@@ -1,16 +1,15 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // Use Routes and Route
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
-import Home from "./Components/Home/Home";
+import HomeWithParams from "./Components/Home/Home";
 import Header from "./Components/Header/Header";
 import ProductDetails from "./Components/ProductDetails/ProductDetails";
 import Cart from "./Components/Cart/Cart";
 
 class App extends Component {
   state = {
-    currentRoute: "all",
     showCart: false,
     cartItems: [],
   };
@@ -74,8 +73,6 @@ class App extends Component {
       <div className="App">
         <BrowserRouter>
           <Header
-            onRouteChange={this.handleRouteChange}
-            currentRoute={this.state.currentRoute}
             onCartClick={this.toggleCart}
             cartVisible={this.state.showCart}
             cartSize={this.state.cartItems.length}
@@ -98,10 +95,13 @@ class App extends Component {
                   <Route
                     path="/"
                     element={
-                      <Home
-                        currentRoute={this.state.currentRoute}
-                        handleAddToCart={this.handleAddToCart}
-                      />
+                      <HomeWithParams handleAddToCart={this.handleAddToCart} />
+                    }
+                  />
+                  <Route
+                    path="/:category"
+                    element={
+                      <HomeWithParams handleAddToCart={this.handleAddToCart} />
                     }
                   />
                   <Route

@@ -14,9 +14,15 @@ const GET_CATEGORIES = gql`
 `;
 
 class Header extends Component {
+  handleHeaderNavClick = (category) => {
+    this.props.navigate(`/${category}`);
+    if (this.props.cartVisible) this.props.onCartClick();
+  };
+
   render() {
-    const { onRouteChange, currentRoute, onCartClick, cartSize, cartVisible } =
-      this.props;
+    const { onCartClick, cartSize } = this.props;
+    const route =
+      window.location.pathname.length > 1 ? window.location.pathname : "/all";
     return (
       <div className="header-container">
         <Query query={GET_CATEGORIES}>
@@ -24,31 +30,29 @@ class Header extends Component {
             if (loading) return <p className="header-item">Loading...</p>;
             if (error)
               return <p className="header-item">Error: {error.message}</p>;
-            const routes = data.categories;
 
             return (
               <ul className="border">
-                {routes.map((route) => (
+                {data.categories.map((category) => (
                   <li
-                    className={currentRoute === route ? "active-route" : ""}
-                    key={route}
-                    onClick={() => {
-                      onRouteChange(route, this.props);
-                      if (cartVisible) onCartClick();
-                    }}
+                    key={category}
+                    className={route === "/" + category ? "active-route" : ""}
+                    onClick={() => this.handleHeaderNavClick(category)}
                   >
                     <Link
+                      data-testid={
+                        route === "/" + category
+                          ? `active-category-link`
+                          : `category-link`
+                      }
+                      to={`/${category}`}
+                      className="category-link"
                       style={{
                         textDecoration: "none",
                         color: "var(--text-primary)",
                       }}
-                      data-testid={`${
-                        currentRoute === route
-                          ? "active-category-link"
-                          : "category-link"
-                      }`}
                     >
-                      {route}
+                      {category}
                     </Link>
                   </li>
                 ))}

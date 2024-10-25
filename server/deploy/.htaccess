@@ -1,3 +1,18 @@
-RewriteEngine on
-RewriteRule .* /public/$0 [L]
-DirectoryIndex index.php
+RewriteEngine On
+
+# Allow serving of existing files (like images, CSS, JS)
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Redirect all requests to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Handle CORS if necessary
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET,POST,OPTIONS,DELETE,PUT"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Show PHP errors for debugging (disable in production)
+php_flag display_errors On
+php_value error_reporting -1

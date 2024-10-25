@@ -7,16 +7,6 @@ import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
 import pointerImage from "../../assets/left-arrow.png";
 
-function toKebabCase(str) {
-  return str
-    .trim() // Remove leading and trailing whitespace
-    .toLowerCase() // Convert to lowercase
-    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
-    .replace(/[^\w-]+/g, "") // Remove any non-word characters except hyphens
-    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove hyphens from the start and end
-}
-
 const GET_PRODUCT = gql`
   query GetItems($id: String!) {
     product(id: $id) {

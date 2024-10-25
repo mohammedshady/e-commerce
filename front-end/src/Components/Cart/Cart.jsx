@@ -48,7 +48,7 @@ class Cart extends Component {
     }, 0);
 
     return (
-      <div className="cart-main-container">
+      <div className="cart-main-container" data-testid="cart-overlay">
         <h3 className="cart-main-header">
           My Bag,
           {items.length > 1 ? `${items.length} Items` : `${items.length} Item`}
