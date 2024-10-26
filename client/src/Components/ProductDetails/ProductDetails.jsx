@@ -185,7 +185,7 @@ class ProductDetails extends Component {
                   className="product-details-description"
                   data-testid="product-description"
                 >
-                  {parse(product.description)}
+                  {parse(DOMPurify.sanitize(product.description))}
                 </div>
               </div>
             </div>
