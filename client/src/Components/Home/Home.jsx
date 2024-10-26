@@ -1,40 +1,11 @@
 import React, { Component } from "react";
 import "./Home.css";
 import { Query } from "@apollo/client/react/components";
-import gql from "graphql-tag";
+import { GET_ITEMS } from "../../graphql/queries";
 import { withRouter } from "../../WithRouter";
 import cartIcon from "../../assets/CartW.svg";
 import { useParams } from "react-router-dom";
 import { toKebabCase } from "../../helpers/toKebabCase";
-
-const GET_ITEMS = gql`
-  query GetItems($category: String!) {
-    products(category: $category) {
-      id
-      name
-      gallery
-      attributes {
-        id
-        name
-        type
-        items {
-          id
-          displayValue
-          value
-        }
-      }
-      prices {
-        amount
-        currency {
-          label
-          symbol
-        }
-      }
-      category
-      in_stock
-    }
-  }
-`;
 
 class Home extends Component {
   constructor() {

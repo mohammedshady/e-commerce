@@ -1,16 +1,10 @@
 import React, { Component } from "react";
 import "./Cart.css";
-import gql from "graphql-tag";
+import { ADD_ORDER } from "../../graphql/mutations";
 import { Mutation } from "@apollo/client/react/components";
 import AddIcon from "../../assets/plus.png";
 import RemoveIcon from "../../assets/minus.png";
 import Attribute from "../Attribute/Attribute";
-
-const ADD_ORDER = gql`
-  mutation AddOrder($items: [ItemInput!]!, $price: Float!) {
-    addOrder(items: $items, price: $price)
-  }
-`;
 
 class Cart extends Component {
   handlePrepareOrder = () => {

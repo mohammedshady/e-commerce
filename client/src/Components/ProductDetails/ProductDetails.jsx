@@ -1,41 +1,11 @@
 import React, { Component } from "react";
-import { gql } from "@apollo/client";
+import { GET_PRODUCT } from "../../graphql/queries";
 import { Query } from "@apollo/client/react/components";
 import { withRouter } from "../../WithRouter";
 import "./ProductDetails.css";
 import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
 import pointerImage from "../../assets/left-arrow.png";
-
-const GET_PRODUCT = gql`
-  query GetItems($id: String!) {
-    product(id: $id) {
-      id
-      name
-      gallery
-      prices {
-        amount
-        currency {
-          label
-          symbol
-        }
-      }
-      attributes {
-        id
-        name
-        type
-        items {
-          id
-          displayValue
-          value
-        }
-      }
-      category
-      description
-      in_stock
-    }
-  }
-`;
 
 class ProductDetails extends Component {
   state = { currentImage: 0, productDetails: null };

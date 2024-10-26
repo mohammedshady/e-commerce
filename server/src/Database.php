@@ -4,6 +4,7 @@ namespace App;
 
 use PDO;
 use PDOException;
+use Dotenv\Dotenv;
 
 class Database
 {
@@ -12,10 +13,16 @@ class Database
 
     public function __construct()
     {
-
+        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
         if (self::$connection === null) {
             try {
-                self::$connection = new PDO('mysql:host=localhost;dbname=e-commerce', 'root', '');
+                $host = $_ENV['DB_HOST'];
+                $dbname = $_ENV['DB_NAME'];
+                $user = $_ENV['DB_USER'];
+                $pass = $_ENV['DB_PASS'];
+
+                self::$connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 die('Connection failed: ' . $e->getMessage());

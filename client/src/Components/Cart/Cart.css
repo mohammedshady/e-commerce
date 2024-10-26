@@ -62,7 +62,7 @@
   cursor: pointer;
 }
 .cart-item-controls button:hover {
-  background-color: var(--text-secondary);
+  background-color: var(--bg-secondary);
 }
 .cart-total-container {
   margin: 20px 0px;
