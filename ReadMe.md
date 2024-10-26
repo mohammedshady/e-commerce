@@ -1,5 +1,5 @@
 # E-commerce app
-> A simple eCommerce website with product listing, and cart functionality created as an assingment . 
+> A simple eCommerce website with product listing, and cart functionality created as a Junior Full Stack Developer test task. 
 
 ## Description
 This App includes 2 Main Pages
