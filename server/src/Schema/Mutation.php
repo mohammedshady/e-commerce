@@ -5,7 +5,7 @@ namespace App\Schema;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ObjectType;
 use App\Schema\Resolvers\OrderResolver;
-use App\Schema\Types\ItemInputType; // Import the new ItemInputType
+use App\Schema\Types\ItemInputType;
 
 class Mutation
 {
@@ -20,9 +20,7 @@ class Mutation
                         'items' => ['type' => Type::listOf(Type::nonNull(new ItemInputType()))],
                         'price' => ['type' => Type::nonNull(Type::float())]
                     ],
-                    'resolve' => static function ($rootValue, array $args) {
-                        return OrderResolver::index($args['items'], $args['price']);
-                    },
+                    'resolve' => [new OrderResolver(), 'resolve']
                 ],
             ],
         ]);

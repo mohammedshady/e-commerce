@@ -2,12 +2,13 @@
 
 namespace App\Schema\Resolvers;
 
-use App\Services\CategoryService;
+use App\Schema\AbstractResolver;
+use App\Repository\CategoryRepository;
 
-class CategoryResolver
+class CategoryResolver extends AbstractResolver
 {
-    public static function index(): array
+    public function resolve($rootValue, array $args, $context, $info)
     {
-        return CategoryService::getCategories();
+        return CategoryRepository::getAllCategories();
     }
 }

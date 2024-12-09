@@ -3,11 +3,13 @@
 namespace App\Schema\Resolvers;
 
 use App\Services\OrderService;
+use App\Schema\AbstractResolver;
 
-class OrderResolver
+class OrderResolver extends AbstractResolver
 {
-    public static function index(array $items, $price): string
+    public function resolve($rootValue, array $args, $context, $info): string
     {
-        return OrderService::insertOrder($items, $price);
+        $this->validateArgs(['items', 'price'], $args);
+        return OrderService::insertOrder($args['items'], $args['price']);
     }
 }
