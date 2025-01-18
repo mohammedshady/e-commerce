@@ -1,3 +1,2 @@
 /vendor/
-/deploy/
-/src/.env
+.env

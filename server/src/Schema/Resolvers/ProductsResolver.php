@@ -2,22 +2,16 @@
 
 namespace App\Schema\Resolvers;
 
-use App\Schema\AbstractResolver;
-use App\Repository\ProductRepository;
+use App\Services\ProductService;
 
-class ProductResolver extends AbstractResolver
+class ProductsResolver
 {
-    public function resolve($rootValue, array $args, $context, $info)
+    public static function index(?string $category = null): array
     {
-        $this->validateArgs(['id'], $args);
-        return ProductRepository::getProduct($args['id']);
+        return ProductService::getProducts($category);
     }
-}
-
-class ProductsResolver extends AbstractResolver
-{
-    public function resolve($rootValue, array $args, $context, $info)
+    public static function get(string $id): array
     {
-        return ProductRepository::getAllProducts($args['category'] ?? null);
+        return ProductService::getProduct($id);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Schema;
 use App\Schema\Resolvers\CategoryResolver;
 use GraphQL\Type\Definition\Type;
 use App\Schema\Types\ProductType;
-use App\Schema\Types\CurrencyType;
+use App\Schema\Resolvers\ProductResolver;
 use GraphQL\Type\Definition\ObjectType;
 use App\Schema\Resolvers\ProductsResolver;
 
@@ -28,20 +28,20 @@ class Query
                 'products' => [
                     'type' => Type::listOf($productType),
                     'args' => [
-                        'category' => ['type' => Type::string()],
+                        'category' => Type::string()
                     ],
-                    'resolve' => static fn($rootValue, array $args): array => ProductsResolver::index($args['category'] ?? null),
+                    'resolve' => [new ProductsResolver(), 'resolve']
                 ],
                 'product' => [
                     'type' => $productType,
                     'args' => [
-                        'id' => ['type' => Type::nonNull(Type::string())],
+                        'id' => Type::nonNull(Type::string())
                     ],
-                    'resolve' => static fn($rootValue, array $args): array => ProductsResolver::get($args['id']),
+                    'resolve' => [new ProductResolver(), 'resolve']
                 ],
                 'categories' => [
                     'type' => Type::listOf(Type::string()),
-                    'resolve' => static fn($rootValue, array $args): array => CategoryResolver::index(),
+                    'resolve' => [new CategoryResolver(), 'resolve']
                 ],
             ],
         ]);
