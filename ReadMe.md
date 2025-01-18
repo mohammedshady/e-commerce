@@ -30,7 +30,7 @@ This App includes 2 Main Pages
 
 ## Deployment
 > The application is deployed on InfinityFree, a free hosting service that provides PHP and MySQL support.
-> You can access via link : http://fullstack-php-account.000.pe
+> You can access via link : [http://fullstack-php-account.000.pe](http://e-commerce-php-ql.infinityfreeapp.com/)
 
 ## Authors
 - **Mohammed Shady** - _GitHub Profile_: [mohammedshady](https://github.com/mohammedshady) | _Email_: mohatech777@gmail.com
