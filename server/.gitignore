@@ -1,2 +1,4 @@
 /vendor/
 .env
+/server-old/
+/deploy/
