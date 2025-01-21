@@ -3,6 +3,7 @@ import { GET_PRODUCT } from "../../graphql/queries";
 import { Query } from "@apollo/client/react/components";
 import { withRouter } from "../../WithRouter";
 import "./ProductDetails.css";
+import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import Attribute from "../Attribute/Attribute"; // Import the single Attribute class component
 import pointerImage from "../../assets/left-arrow.png";
